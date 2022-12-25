@@ -1,13 +1,19 @@
 import React from 'react';
+import {FilterType} from '../App';
+import s from "./Button.module.css"
 
 type ButtonType = {
     name: string
-    callback: ()=>void
+    callBack: ()=>void
+    filter?: FilterType
 }
 
-export const Button = (props: ButtonType) => {
+export const Button: React.FC<ButtonType> = ({name, callBack, filter}) => {
+    const onClickHandler = () => {
+        callBack()
+    }
     return (
-            <button onClick={props.callback}>{props.name}</button>
+        <button className={filter===name?s.active:""} onClick={onClickHandler}>{name}</button>
     );
 };
 

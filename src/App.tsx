@@ -1,49 +1,51 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from './Todolist';
 import {v1} from 'uuid';
+import {Todolist} from './components/Todolist';
 
-export type TypeFilter = 'ALL' | 'Active' | 'Completed'
+
+export type TasksType = {
+    id: string
+    task: string
+    isDone: boolean
+}
+
+export type FilterType = "All" | "Completed" | "Active"
+
 
 function App() {
-
-    let [tasks, setTasks] = useState([
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-        {id: v1(), title: 'ReactJS', isDone: false}
+    const [tasks, setTasks] = useState<TasksType[]>([
+        {id: v1(), task: 'HTML', isDone: true},
+        {id: v1(), task: 'CSS', isDone: true},
+        {id: v1(), task: 'JS', isDone: true},
+        {id: v1(), task: 'React', isDone: false},
     ])
-
-    const addTask = (v: string) => {
-        let newTask = {id: v1(), title: v, isDone: false}
+    const removeTask = (id:string) => {
+        setTasks(tasks.filter(t=>t.id!==id))
+    }
+    const addNewTask = (inputValue: string) => {
+        const newTask = {id: v1(), task: inputValue, isDone: false}
         setTasks([newTask, ...tasks])
     }
-
-    const removeTask = (id: string) => {
-        setTasks(tasks.filter(el => el.id !== id))
+    const [filterValue, setFilterValue] = useState<FilterType>("All")
+    const changeFilter = (filter: FilterType)=>{
+        setFilterValue(filter)
     }
+    let filteredTasks: any = []
+    if(filterValue==="Completed"){filteredTasks=tasks.filter(t=>t.isDone)}
+    if(filterValue==="Active"){filteredTasks=tasks.filter(t=>!t.isDone)}
+    if(filterValue==="All"){filteredTasks=[...tasks]}
 
-    let [filteredTasks, setFilteredTasks] = useState<TypeFilter>('ALL')
 
-    let taskFilter = (value: TypeFilter) => {
-        setFilteredTasks(value)
-
-    }
-
-    if (filteredTasks === 'Completed') {
-        tasks = tasks.filter(el => el.isDone)
-    }
-    if (filteredTasks === 'Active') {
-        tasks = tasks.filter(el => !el.isDone)
-    }
 
     return (
         <div className="App">
             <Todolist
-                title="What to learn"
-                tasks={tasks}
+                tasks={filteredTasks}
                 removeTask={removeTask}
-                taskFilter={taskFilter}
-                callback={addTask}
+                changeFilter={changeFilter}
+                filter={filterValue}
+                addNewTask={addNewTask}
             />
         </div>
     );
