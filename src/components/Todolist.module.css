@@ -1,0 +1,7 @@
+.errorMessage {
+    color: red;
+}
+
+.completedTask {
+    opacity: 0.5;
+}

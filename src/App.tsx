@@ -10,7 +10,7 @@ export type TasksType = {
     isDone: boolean
 }
 
-export type FilterType = "All" | "Completed" | "Active"
+export type FilterType = 'All' | 'Completed' | 'Active'
 
 
 function App() {
@@ -20,22 +20,32 @@ function App() {
         {id: v1(), task: 'JS', isDone: true},
         {id: v1(), task: 'React', isDone: false},
     ])
-    const removeTask = (id:string) => {
-        setTasks(tasks.filter(t=>t.id!==id))
+    const removeTask = (id: string) => {
+        setTasks(tasks.filter(t => t.id !== id))
     }
     const addNewTask = (inputValue: string) => {
         const newTask = {id: v1(), task: inputValue, isDone: false}
         setTasks([newTask, ...tasks])
     }
-    const [filterValue, setFilterValue] = useState<FilterType>("All")
-    const changeFilter = (filter: FilterType)=>{
+    const [filterValue, setFilterValue] = useState<FilterType>('All')
+    const changeFilter = (filter: FilterType) => {
         setFilterValue(filter)
     }
-    let filteredTasks: any = []
-    if(filterValue==="Completed"){filteredTasks=tasks.filter(t=>t.isDone)}
-    if(filterValue==="Active"){filteredTasks=tasks.filter(t=>!t.isDone)}
-    if(filterValue==="All"){filteredTasks=[...tasks]}
 
+    const changeIsDone = (checked: boolean, id: string) => {
+        setTasks(tasks.map(t=>t.id===id?{...t, isDone: checked}:t))
+    }
+
+    let filteredTasks: any = []
+    if (filterValue === 'Completed') {
+        filteredTasks = tasks.filter(t => t.isDone)
+    }
+    if (filterValue === 'Active') {
+        filteredTasks = tasks.filter(t => !t.isDone)
+    }
+    if (filterValue === 'All') {
+        filteredTasks = [...tasks]
+    }
 
 
     return (
@@ -46,6 +56,7 @@ function App() {
                 changeFilter={changeFilter}
                 filter={filterValue}
                 addNewTask={addNewTask}
+                changeIsDone={changeIsDone}
             />
         </div>
     );
