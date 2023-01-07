@@ -14,16 +14,40 @@ export type FilterType = 'All' | 'Completed' | 'Active'
 
 
 function App() {
+    const todoListId_1: string = v1()
+    const todoListId_2: string = v1()
+
+
+    const [task, setTasks] = useState([{
+        [todoListId_1]: [
+            {id: v1(), task: 'HTML', isDone: true},
+            {id: v1(), task: 'CSS', isDone: true},
+            {id: v1(), task: 'JS', isDone: true},
+            {id: v1(), task: 'React', isDone: false}
+        ],
+        [todoListId_2]: [
+            {id: v1(), task: 'Meat', isDone: false},
+            {id: v1(), task: 'Milk', isDone: false},
+            {id: v1(), task: 'Water', isDone: false},
+            {id: v1(), task: 'Juice', isDone: false}
+        ]
+    }])
     const [tasks, setTasks] = useState<TasksType[]>([
         {id: v1(), task: 'HTML', isDone: true},
         {id: v1(), task: 'CSS', isDone: true},
         {id: v1(), task: 'JS', isDone: true},
         {id: v1(), task: 'React', isDone: false},
     ])
-    const removeTask = (id: string) => {
+    const [todoLists, setTodoList] = useState([
+        {id: todoListId_1, title: "What to learn", filter: "All"},
+        {id: todoListId_2, title: "What to buy", filter: "All"}
+    ])
+
+
+    const removeTask = (id: string, tdlID: string) => {
         setTasks(tasks.filter(t => t.id !== id))
     }
-    const addNewTask = (inputValue: string) => {
+    const addNewTask = (inputValue: string, tdlID: string) => {
         const newTask = {id: v1(), task: inputValue, isDone: false}
         setTasks([newTask, ...tasks])
     }
@@ -32,11 +56,11 @@ function App() {
         setFilterValue(filter)
     }
 
-    const changeIsDone = (checked: boolean, id: string) => {
+    const changeIsDone = (checked: boolean, id: string, tdlID: string) => {
         setTasks(tasks.map(t=>t.id===id?{...t, isDone: checked}:t))
     }
 
-    let filteredTasks: any = []
+ /*   let filteredTasks: any = []
     if (filterValue === 'Completed') {
         filteredTasks = tasks.filter(t => t.isDone)
     }
@@ -45,6 +69,13 @@ function App() {
     }
     if (filterValue === 'All') {
         filteredTasks = [...tasks]
+    }*/
+
+    const changeFilter = (filter: FilterType, tdlID: string) => {
+        let filteredTasks = []
+        filter==="Completed"?filteredTasks = tasks.filter(t => t.isDone):
+            filter==="Active"?filteredTasks = tasks.filter(t => !t.isDone):
+                filteredTasks = [...tasks]
     }
 
 

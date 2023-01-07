@@ -1,9 +1,11 @@
+
 import React, {ChangeEvent, useState} from 'react';
 import {FilterType, TasksType} from '../App';
 import {Button} from './Button';
 import {Input} from './Input';
-import {useAutoAnimate} from '@formkit/auto-animate/react';
+
 import s from "./Todolist.module.css"
+import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 type TodolistType = {
     tasks: TasksType[]
