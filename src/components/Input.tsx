@@ -1,22 +1,19 @@
-import React, {ChangeEvent, KeyboardEvent} from 'react';
-import s from './Input.module.css'
+import React, {ChangeEvent, FC, KeyboardEvent} from 'react';
 
-type InputType = {
-    callbackInput: (value: string) => void
-    inputValue: string
-    onKeyDownCallback: () => void
-    error: string|null
+type InputPropsType = {
+    callbackInput: (inputValue: string) => void
+    value: string
+    onEnterInputHandler: (e: KeyboardEvent<HTMLInputElement>)=>void
+    className: string
 }
 
-export const Input: React.FC<InputType> = ({callbackInput, inputValue, onKeyDownCallback, ...props}) => {
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => callbackInput(e.currentTarget.value)
-    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') onKeyDownCallback()
+const Input: FC<InputPropsType> = (props) => {
+    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>)=>{
+        props.callbackInput(e.currentTarget.value)
     }
-
     return (
-        <input className={props.error?s.error:''} value={inputValue} onChange={onChangeHandler} onKeyDown={onKeyDownHandler} />
+        <input className={props.className} onKeyDown={props.onEnterInputHandler} value={props.value} onChange={onChangeInputHandler}/>
     );
 };
 
+export default Input;
