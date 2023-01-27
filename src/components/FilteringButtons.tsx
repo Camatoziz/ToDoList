@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import Button from "./Button";
+import {Button} from '@mui/material'
 import {FilterType} from "../App";
 
 type FilterButtonsPropsType = {
@@ -13,9 +13,12 @@ const FilteringButtons:FC<FilterButtonsPropsType> = (props) => {
     }
     return (
         <div>
-            <Button filter={props.filter} title={'All'} callback={() => filterButtonHandler("All")}/>
-            <Button filter={props.filter} title={'Completed'} callback={() => filterButtonHandler("Completed")}/>
-            <Button filter={props.filter} title={'Active'} callback={() => filterButtonHandler("Active")}/>
+            <Button variant={props.filter==='All'?"contained":"outlined"} onClick={()=>filterButtonHandler('All')}>{'All'} </Button>
+            <Button variant={props.filter==='Completed'?"contained":"outlined"} onClick={()=>filterButtonHandler("Completed")}>{'Completed'}</Button>
+            <Button variant={props.filter==='Active'?"contained":"outlined"} onClick={()=>filterButtonHandler('Active')}>{'Active'}</Button>
+         {/*   <Button filter={props.filter} title={'All'} />
+            <Button filter={props.filter} title={'Completed'} />
+            <Button filter={props.filter} title={'Active'} callback={() => filterButtonHandler("Active")}/>*/}
         </div>
     );
 };

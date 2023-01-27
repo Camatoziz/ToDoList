@@ -1,10 +1,11 @@
+import { TextField } from '@mui/material';
 import React, {ChangeEvent, FC, KeyboardEvent} from 'react';
 
 type InputPropsType = {
     callbackInput: (inputValue: string) => void
     value: string
     onEnterInputHandler: (e: KeyboardEvent<HTMLInputElement>)=>void
-    className: string
+        error: boolean
 }
 
 const Input: FC<InputPropsType> = (props) => {
@@ -12,7 +13,15 @@ const Input: FC<InputPropsType> = (props) => {
         props.callbackInput(e.currentTarget.value)
     }
     return (
-        <input className={props.className} onKeyDown={props.onEnterInputHandler} value={props.value} onChange={onChangeInputHandler}/>
+        <TextField value={props.value}
+                   onChange={onChangeInputHandler}
+                   onKeyDown={props.onEnterInputHandler}
+                   variant={'outlined'}
+                   size={'small'}
+                   label={'Enter title'}
+                   error={props.error}
+                   helperText={props.error&&"Title is required"}
+        />
     );
 };
 

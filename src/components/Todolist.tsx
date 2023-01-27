@@ -1,10 +1,12 @@
 import React, {FC, useState, KeyboardEvent, ChangeEvent} from 'react';
-import {FilterType, TaskType} from "../App";
-import Button from "./Button";
-import Input from "./Input";
-import FilteringButtons from "./FilteringButtons";
-import AddItemForm from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {FilterType, TaskType} from '../App';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import Input from './Input';
+import FilteringButtons from './FilteringButtons';
+import AddItemForm from './AddItemForm';
+import {EditableSpan} from './EditableSpan';
+import {Button, IconButton} from '@mui/material';
 
 type TodolistProps = {
     key: string
@@ -19,8 +21,8 @@ type TodolistProps = {
     addTask: (text: string, tdlID: string) => void
     changeFilter: (filter: FilterType, tdlID: string) => void
     changeStatus: (status: boolean, id: string, tdlID: string) => void
-    editedStringTask: (text: string, id: string, tdlID: string)=>void
-    editedStringTodolist: (text: string, tdlID: string)=>void
+    editedStringTask: (text: string, id: string, tdlID: string) => void
+    editedStringTodolist: (text: string, tdlID: string) => void
 }
 
 const Todolist: FC<TodolistProps> = (props) => {
@@ -44,21 +46,25 @@ const Todolist: FC<TodolistProps> = (props) => {
         ? props.dataTasks.map(t => {
             return (
                 <li key={t.id}>
-                    <input type={"checkbox"} checked={t.isDone}
+                    <input type={'checkbox'} checked={t.isDone}
                            onChange={(e: ChangeEvent<HTMLInputElement>) => changeStatusHandler(e.currentTarget.checked, t.id)}/>
-                    <EditableSpan editedString={(text: string)=>props.editedStringTask(text, t.id, props.tdlID)}
+                    <EditableSpan editedString={(text: string) => props.editedStringTask(text, t.id, props.tdlID)}
                                   text={t.task}/>
-                    <Button title={'x'} callback={() => props.removeTask(t.id, props.tdlID)}/>
+                    <IconButton size={'small'} color={'primary'} onClick={() => props.removeTask(t.id, props.tdlID)}>
+                        <HighlightOffIcon/>
+                    </IconButton>
                 </li>
             )
-        }) : "Tasks is empty"
+        }) : 'Tasks is empty'
 
     return (
         <div>
             <h3>
                 <EditableSpan text={props.title}
-                              editedString={(text: string)=>props.editedStringTodolist(text, props.tdlID)}/>
-                <Button title={'x'} callback={removeTodolistHandler}/>
+                              editedString={(text: string) => props.editedStringTodolist(text, props.tdlID)}/>
+                <IconButton size={"small"} color={'primary'} onClick={removeTodolistHandler}>
+                    <DeleteOutlineIcon/>
+                </IconButton>
             </h3>
             <AddItemForm addItem={addTaskHandler}/>
             {/*<div>

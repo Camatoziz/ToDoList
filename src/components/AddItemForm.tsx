@@ -1,7 +1,8 @@
 import React, {FC, KeyboardEvent, useState} from 'react';
-import Button from "./Button";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Input from "./Input";
 import s from './AddItemForm.module.css'
+import { Button, IconButton } from '@mui/material';
 
 type AddItemtFormProps = {
     addItem: (text: string)=> void
@@ -9,25 +10,35 @@ type AddItemtFormProps = {
 
 const AddItemForm: FC<AddItemtFormProps> = (props) => {
     const [inputValue, setInputValue] = useState<string>("")
-    const [error, setError] = useState<string|null>(null)
+    const [error, setError] = useState<boolean>(false)
 
     const changeInputValue = (value: string)=>{
-        setError(null)
+        setError(false)
         setInputValue(value)
     }
     const onEnterInputHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         e.key==="Enter"&&addItemHandler()
     }
     const addItemHandler = () =>{
-        inputValue===""?setError('Title is required'):
+        inputValue===""?setError(true):
             props.addItem(inputValue.trim())
         setInputValue('')
     }
-const errorClass = error===null?'':s.errorInput
+/*const errorClass = error===null?'':s.errorInput*/
     return (
         <div>
-            <Input className={errorClass} onEnterInputHandler={onEnterInputHandler} value={inputValue} callbackInput={changeInputValue}/>
-            <Button title={"+"} callback={addItemHandler}/>
+            
+            <Input                
+                error={error}
+                onEnterInputHandler={onEnterInputHandler} 
+                value={inputValue} 
+                callbackInput={changeInputValue}/>
+           <IconButton>
+
+           </IconButton>
+            <Button size={'small'} variant={"contained"} onClick={addItemHandler} endIcon={<AddCircleOutlineIcon/>}>
+                {"Add"}
+            </Button>
             {error&&<div className={s.errorMessage}>{error}</div>}
         </div>
     );

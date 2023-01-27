@@ -4,6 +4,7 @@ import './App.css';
 import {v1} from "uuid";
 import Todolist from "./components/Todolist";
 import AddItemForm from "./components/AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, Menu, Paper, Toolbar, Typography } from '@mui/material';
 
 type TodolistType = {
     id: string
@@ -90,6 +91,9 @@ function App() {
         }
         const filteredTasks: TaskType[] = changeRenderTasksByFilter(tl.filter, tl.id)
         return (
+            <Grid item>
+                <Paper elevation={3}
+                       sx={{p: "20px"}}>
             <Todolist
                 key={tl.id}
                 tdlID={tl.id}
@@ -106,17 +110,44 @@ function App() {
                 editedStringTask={editStringTask}
             editedStringTodolist={editedStringTodolist}
             />
+                </Paper>
+            </Grid>
         )
     })
 
     return (
         <div className="App">
-            <div>
-                <AddItemForm addItem={addTodolist}/>
-            </div>
-            <div>
-                {mappedTodolists}
-            </div>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{mr: 2}}
+                    >
+                        <Menu open={false}/>
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        TodoLists
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid
+                    container
+                    sx={{p: "10px 0px"}}
+                >
+                    <AddItemForm addItem={addTodolist}/>
+                </Grid>
+                <Grid container
+                      spacing={2}>
+                    {mappedTodolists}
+                </Grid>
+            </Container>
+
+
         </div>
     );
 }
